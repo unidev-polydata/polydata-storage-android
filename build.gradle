@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+subprojects {
+
+    apply plugin: 'maven'
+
+    version = "2.0.0-SNAPSHOT"
+    group = "com.unidev.polydata"
+
+    apply from: 'http://dev.local/gradle/android/uploadArchives.groovy'
+    apply from: 'http://dev.local/gradle/android/defaultRepositories.groovy'
+
+
+
+
+}
+
