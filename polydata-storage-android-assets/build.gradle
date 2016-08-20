@@ -37,6 +37,7 @@ android {
     dependencies {
         compile 'com.unidev.android.platform:core-utils:3.1.1'
         compile 'com.unidev.polydata:polydata-storage:2.0.0-SNAPSHOT'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
     }
 
 }
