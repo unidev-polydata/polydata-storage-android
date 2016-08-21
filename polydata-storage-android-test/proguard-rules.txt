@@ -1,0 +1,111 @@
+-keepattributes Signature
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+
+-dontskipnonpubliclibraryclassmembers
+
+-keepattributes *Annotation*,EnclosingMethod
+
+-keepnames class org.codehaus.jackson.** { *; }
+
+-dontwarn javax.xml.**
+-dontwarn javax.xml.stream.events.**
+-dontwarn com.fasterxml.jackson.databind.**
+
+-dontwarn org.codehaus.jackson
+
+# compatibility dependencies
+
+-keep class org.apache.http.** { *; }
+-dontwarn org.apache.http.**
+
+-keep class android.net.http.** { *; }
+-dontwarn android.net.http.**
+
+-keep class android.support.v7.** { *; }
+-keep class android.support.v4.** { *; }
+
+# Ok http
+-dontwarn java.nio.file.Files
+-dontwarn java.nio.file.Path
+-dontwarn java.nio.file.OpenOption
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn com.squareup.**
+-dontwarn okio.**
+-dontwarn okio.**
+
+-dontwarn com.squareup.okhttp.**
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+
+-dontwarn retrofit.**
+-dontwarn retrofit.appengine.UrlFetchClient
+-keep class retrofit.** { *; }
+-keepclasseswithmembers class * {
+    @retrofit.http.* <methods>;
+}
+
+-keepattributes Signature
+-keepattributes *Annotation*
+
+
+# New rules for google play services 8.x
+-dontwarn android.security.**
+
+-dontwarn sun.misc.**
+
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+
+# RX
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+### XML SERIALIZER SETTINGS
+
+-keepclassmembers,allowobfuscation class * {
+    @org.simpleframework.xml.* <fields>;
+    @org.simpleframework.xml.* <init>(...);
+}
+
+
+### Json SERIALIZER SETTINGS
+-keepclassmembers,allowobfuscation class * {
+    @org.codehaus.jackson.annotate.* <fields>;
+    @org.codehaus.jackson.annotate.* <init>(...);
+}
+
+-keepclassmembers class ** {
+ public void onOperationFinished*(**);
+ public void onBroadcastOperationFinished*(**);
+}
+
+-keepclassmembers class ** {
+ public void onEvent*(**);
+}
+
+# Polydata
+-keep public class com.unidev.polydata.** {
+public void set*(***);
+public *** get*();
+}
+
+-keep class com.unidev.polydata.** { *; }
+
+# Keep v7 menu variable names
+
+-keep class android.support.v7.widget.** { *; }
+-keep class android.support.v7.internal.view.menu** { *; }
+
+# red mad robot chornos
+-keepclassmembers class ** {
+ public void onOperationFinished*(**);
+ public void onBroadcastOperationFinished*(**);
+}
