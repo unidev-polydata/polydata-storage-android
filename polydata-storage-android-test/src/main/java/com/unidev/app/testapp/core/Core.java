@@ -39,4 +39,8 @@ public class Core {
         storage.load(context, ASSETS_FILE);
     }
 
+    public AssetStorage fetchStorage() {
+        return storage;
+    }
+
 }
