@@ -16,6 +16,7 @@
 package com.unidev.app.testapp;
 
 import android.app.Application;
+import com.unidev.app.testapp.core.Core;
 
 
 public class App extends Application {
@@ -23,5 +24,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Core.getInstance().load(this);
     }
 }

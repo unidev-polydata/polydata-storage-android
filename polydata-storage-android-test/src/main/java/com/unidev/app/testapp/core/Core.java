@@ -15,7 +15,10 @@
  */
 package com.unidev.app.testapp.core;
 
+import android.content.Context;
+
 import com.unidev.core.di.AppContext;
+import com.unidev.polydata.storage.AssetStorage;
 
 /**
  * Application custom backend logic
@@ -26,6 +29,14 @@ public class Core {
 
     public static Core getInstance() {
         return AppContext.getInstance(INSTANCE_NAME, Core.class);
+    }
+
+    private static final String ASSETS_FILE = "file.json";
+    private AssetStorage storage;
+
+    public void load(Context context) {
+        storage = new AssetStorage();
+        storage.load(context, ASSETS_FILE);
     }
 
 }
