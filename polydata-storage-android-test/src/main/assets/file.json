@@ -1,0 +1,11 @@
+[
+  {
+    "_id" : "tomato",
+    "data" : "tomato record"
+  },
+  {
+    "_id" : "potato",
+    "data" : "potato record"
+  }
+
+]

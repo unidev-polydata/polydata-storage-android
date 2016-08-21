@@ -20,25 +20,58 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.unidev.app.testapp.R;
+import com.unidev.app.testapp.core.Core;
+import com.unidev.polydata.domain.Poly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main, container, false);
 
-        Button button = (Button) view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        ListView listView = (ListView) view.findViewById(R.id.list);
+
+        final List<? extends Poly> records = new ArrayList<>(Core.getInstance().fetchStorage().list());
+
+
+        listView.setAdapter(new BaseAdapter() {
             @Override
-            public void onClick(View v) {
+            public int getCount() {
+                return records.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return position;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View view, ViewGroup parent) {
+                if (view == null) {
+                    view = inflater.inflate(R.layout.list_item, null);
+                }
+
+                TextView item = (TextView) view.findViewById(R.id.item);
+                item.setText(records.get(position) + "");
+
+                return view;
             }
         });
-
         return view;
     }
 
