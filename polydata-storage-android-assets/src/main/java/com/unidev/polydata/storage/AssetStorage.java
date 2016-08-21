@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2015,2016 Denis O <denis@universal-development.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.unidev.polydata.storage;
 
 import android.content.Context;
@@ -6,12 +21,15 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.unidev.polydata.domain.BasicPoly;
 import com.unidev.polydata.domain.BasicPolyList;
 import com.unidev.polydata.domain.Poly;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Storage backed by assets json files
@@ -26,12 +44,16 @@ public class AssetStorage implements PolyStorage {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     }
 
-    private BasicPolyList basicPolyList;
+    private Map<String, BasicPoly> storage;
 
     public void load(Context context, String filePath) {
         AssetManager assets = context.getAssets();
         try (InputStream inputStream = assets.open(filePath)){
-            basicPolyList = objectMapper.readValue(inputStream, BasicPolyList.class);
+            BasicPolyList basicPolyList = objectMapper.readValue(inputStream, BasicPolyList.class);
+            storage = new HashMap<>();
+            for(BasicPoly poly : basicPolyList) {
+                storage.put(poly._id(), poly);
+            }
         } catch (IOException e) {
             Log.e("AssetStorageLoader", "Failed to load storage from " + filePath);
             e.printStackTrace();
@@ -39,18 +61,17 @@ public class AssetStorage implements PolyStorage {
         }
     }
 
-    @Override
-    public Poly fetchById(String id) {
-        for(Poly poly : basicPolyList) {
-            if (id.equals(poly._id())) {
-                return poly;
-            }
-        }
-        return null;
+    public Map<String, BasicPoly> getStorage() {
+        return storage;
     }
 
     @Override
-    public Collection<Poly> list() {
-        return basicPolyList;
+    public Poly fetchById(String id) {
+        return storage.get(id);
+    }
+
+    @Override
+    public Collection<? extends Poly> list() {
+        return storage.values();
     }
 }
