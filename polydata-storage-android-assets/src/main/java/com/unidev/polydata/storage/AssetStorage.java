@@ -27,6 +27,7 @@ import com.unidev.polydata.domain.Poly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ import java.util.Map;
 /**
  * Storage backed by assets json files
  */
-public class AssetStorage implements PolyStorage {
+public class AssetStorage implements PolyStorage, Serializable {
 
     public static ObjectMapper objectMapper;
 
