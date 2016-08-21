@@ -82,7 +82,7 @@ public class AssetStorage implements PolyStorage {
     }
 
     @Override
-    public Poly fetchById(String id) {
+    public BasicPoly fetchById(String id) {
         return storage.get(id);
     }
 
