@@ -1,11 +1,18 @@
-[
-  {
-    "_id" : "tomato",
-    "data" : "tomato record"
-  },
-  {
-    "_id" : "potato",
-    "data" : "potato record"
-  }
+{
+   "meta" : {
+     "title" : "Example storage"
+   },
 
-]
+  "records" : [
+    {
+      "_id" : "tomato",
+      "data" : "tomato record"
+    },
+    {
+      "_id" : "potato",
+      "data" : "potato record"
+    }
+
+  ]
+}
+
