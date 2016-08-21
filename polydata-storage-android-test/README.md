@@ -2,6 +2,8 @@
 
 Example android project which load poly records from assets and display loaded records
 
+![app output ](images/record-list.png)
+
 License
 =======
  
