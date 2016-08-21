@@ -44,8 +44,8 @@ public class AssetStorage implements PolyStorage {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     }
 
-    private BasicPoly meta;
     private Map<String, BasicPoly> storage;
+    private PolyStorageDTO storageDTO;
 
     /**
      * Load poly records from assets
@@ -57,10 +57,9 @@ public class AssetStorage implements PolyStorage {
         InputStream inputStream = null;
         try {
             inputStream = assets.open(filePath);
-            PolyStorageDTO polyDTO = objectMapper.readValue(inputStream, PolyStorageDTO.class);
-            meta = polyDTO.getMeta();
+            storageDTO = objectMapper.readValue(inputStream, PolyStorageDTO.class);
             storage = new HashMap<>();
-            for(BasicPoly poly : polyDTO.getRecords()) {
+            for(BasicPoly poly : storageDTO.getRecords()) {
                 storage.put(poly._id(), poly);
             }
         } catch (IOException e) {
@@ -92,10 +91,16 @@ public class AssetStorage implements PolyStorage {
     }
 
     public BasicPoly getMeta() {
-        return meta;
+        return storageDTO.getMeta();
     }
 
-    public void setMeta(BasicPoly meta) {
-        this.meta = meta;
+    public BasicPoly meta() {
+        return storageDTO.getMeta();
     }
+
+    public PolyStorageDTO storageDTO() {
+        return storageDTO;
+    }
+
+
 }
