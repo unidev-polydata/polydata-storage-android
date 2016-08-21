@@ -18,10 +18,12 @@ package com.unidev.polydata.storage;
 import com.unidev.polydata.domain.BasicPoly;
 import com.unidev.polydata.domain.BasicPolyList;
 
+import java.io.Serializable;
+
 /**
  * Poly data storage DTO object
  */
-public class PolyStorageDTO {
+public class PolyStorageDTO implements Serializable {
 
     private BasicPoly meta;
 
