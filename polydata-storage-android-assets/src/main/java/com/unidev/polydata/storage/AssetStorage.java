@@ -46,18 +46,32 @@ public class AssetStorage implements PolyStorage {
 
     private Map<String, BasicPoly> storage;
 
+    /**
+     * Load poly records from assets
+     * @param context Application context
+     * @param filePath Path to file in assets
+     */
     public void load(Context context, String filePath) {
         AssetManager assets = context.getAssets();
-        try (InputStream inputStream = assets.open(filePath)){
+        InputStream inputStream = null;
+        try {
+            inputStream = assets.open(filePath);
             BasicPolyList basicPolyList = objectMapper.readValue(inputStream, BasicPolyList.class);
             storage = new HashMap<>();
             for(BasicPoly poly : basicPolyList) {
                 storage.put(poly._id(), poly);
             }
         } catch (IOException e) {
-            Log.e("AssetStorageLoader", "Failed to load storage from " + filePath);
             e.printStackTrace();
             throw new RuntimeException(e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 
