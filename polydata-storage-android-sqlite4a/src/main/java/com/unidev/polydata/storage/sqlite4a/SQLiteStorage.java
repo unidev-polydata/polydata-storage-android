@@ -1,5 +1,6 @@
 package com.unidev.polydata.storage.sqlite4a;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -45,7 +46,6 @@ public class SQLiteStorage implements PolyStorage {
         return db;
     }
 
-
     @Override
     public Poly fetchById(String id) {
         SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE id = ?");
@@ -56,6 +56,7 @@ public class SQLiteStorage implements PolyStorage {
             String data = cursor.getColumnString(1);
             poly = loadPoly(data);
         }
+        sqLiteStmt.close();
         return poly;
     }
 
@@ -69,7 +70,39 @@ public class SQLiteStorage implements PolyStorage {
             Poly poly = loadPoly(data);
             list.add(poly);
         }
+        stmt.close();
         return list;
+    }
+
+    public boolean hasPoly(String id) {
+        SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE id = ?");
+        sqLiteStmt.bindString(1, id);
+        SQLiteCursor cursor = sqLiteStmt.executeSelect();
+        if (cursor.step()) {
+            return true;
+        }
+        sqLiteStmt.close();
+        return false;
+    }
+
+    public void addPoly(Poly poly) {
+        try {
+            String raw = objectMapper.writeValueAsString(poly);
+            SQLiteStmt insertStmt = db.prepare("INSERT INTO polys(id, data) VALUES(?, ?);");
+            insertStmt.bindString(1, poly._id());
+            insertStmt.bindString(2, raw);
+            insertStmt.executeInsert();
+            insertStmt.close();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removePoly(String id) {
+        SQLiteStmt sqLiteStmt = db.prepare("DELETE FROM polys WHERE id = ?; ");
+        sqLiteStmt.bindString(1, id);
+        sqLiteStmt.executeUpdateDelete();
+        sqLiteStmt.close();
     }
 
     protected Poly loadPoly(String raw) {
