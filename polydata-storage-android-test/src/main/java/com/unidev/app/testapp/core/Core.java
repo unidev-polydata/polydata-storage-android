@@ -19,6 +19,9 @@ import android.content.Context;
 
 import com.unidev.core.di.AppContext;
 import com.unidev.polydata.storage.AssetStorage;
+import com.unidev.polydata.storage.sqlite4a.SQLiteStorage;
+
+import java.io.File;
 
 /**
  * Application custom backend logic
@@ -34,13 +37,23 @@ public class Core {
     private static final String ASSETS_FILE = "file.json";
     private AssetStorage storage;
 
+    private SQLiteStorage sqLiteStorage;
+
     public void load(Context context) {
         storage = new AssetStorage();
         storage.load(context, ASSETS_FILE);
+
+        File favorites = new File(context.getFilesDir(), "favorites");
+
+        sqLiteStorage = new SQLiteStorage(":memory:");
     }
 
     public AssetStorage fetchStorage() {
         return storage;
+    }
+
+    public SQLiteStorage fetchFavorites() {
+        return sqLiteStorage;
     }
 
 }

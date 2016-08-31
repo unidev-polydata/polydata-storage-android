@@ -21,7 +21,7 @@ android {
     buildToolsVersion "24.0.1"
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 24
     }
 
@@ -42,4 +42,5 @@ dependencies {
     compile 'com.unidev.android.platform:core-utils:3.1.1'
     compile 'com.unidev.android.platform:ui-utils:3.1.1'
     compile project(':polydata-storage-android-assets')
+    compile project(':polydata-storage-android-sqlite4a')
 }

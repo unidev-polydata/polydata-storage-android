@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -66,8 +67,25 @@ public class MainFragment extends Fragment {
                     view = inflater.inflate(R.layout.list_item, null);
                 }
 
+                final Poly poly = records.get(position);
+
                 TextView item = (TextView) view.findViewById(R.id.item);
-                item.setText(records.get(position) + "");
+                item.setText(poly + "");
+
+                final Button button = (Button) view.findViewById(R.id.favs);
+                updateButton(button, poly);
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (Core.getInstance().fetchFavorites().hasPoly(poly._id())) {
+                            Core.getInstance().fetchFavorites().removePoly(poly._id());
+                        } else {
+                            Core.getInstance().fetchFavorites().addPoly(poly);
+                        }
+                        updateButton(button, poly);
+                    }
+                });
 
                 return view;
             }
@@ -76,5 +94,12 @@ public class MainFragment extends Fragment {
     }
 
 
+    protected void updateButton(Button button, Poly poly) {
+        if (Core.getInstance().fetchFavorites().hasPoly(poly._id())) {
+            button.setText("Remove");
+        } else {
+            button.setText("Add");
+        }
+    }
 
 }
