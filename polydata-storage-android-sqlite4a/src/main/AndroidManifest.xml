@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.unidev.polydata.android.storage.sqlite4a">
+
+    <application android:allowBackup="true">
+
+    </application>
+
+</manifest>

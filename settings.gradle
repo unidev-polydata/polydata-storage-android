@@ -1,3 +1,4 @@
 include "polydata-storage-android-assets"
+include "polydata-storage-android-sqlite4a"
 
 include "polydata-storage-android-test"
