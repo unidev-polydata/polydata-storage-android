@@ -47,8 +47,16 @@ public class SQLiteStorage implements PolyStorage {
 
 
     @Override
-    public <T extends Poly> T fetchById(String id) {
-        return null;
+    public Poly fetchById(String id) {
+        SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE id = ?");
+        sqLiteStmt.bindString(1, id);
+        Poly poly = null;
+        SQLiteCursor cursor = sqLiteStmt.executeSelect();
+        if (cursor.step()) {
+            String data = cursor.getColumnString(1);
+            poly = loadPoly(data);
+        }
+        return poly;
     }
 
     @Override
