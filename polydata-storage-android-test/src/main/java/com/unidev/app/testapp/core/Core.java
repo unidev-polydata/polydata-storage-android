@@ -16,12 +16,15 @@
 package com.unidev.app.testapp.core;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.unidev.core.di.AppContext;
 import com.unidev.polydata.storage.AssetStorage;
 import com.unidev.polydata.storage.sqlite4a.SQLiteStorage;
 
 import java.io.File;
+
+import sqlite4a.SQLite;
 
 /**
  * Application custom backend logic
@@ -43,9 +46,11 @@ public class Core {
         storage = new AssetStorage();
         storage.load(context, ASSETS_FILE);
 
-        File favorites = new File(context.getFilesDir(), "favorites");
+        SQLite.loadLibrary(context);
 
-        sqLiteStorage = new SQLiteStorage(":memory:");
+        File favorites = new File(context.getFilesDir(), "favorites");
+        Log.d("favorites", "Favorites : " + favorites);
+        sqLiteStorage = new SQLiteStorage(favorites.getPath());
     }
 
     public AssetStorage fetchStorage() {
