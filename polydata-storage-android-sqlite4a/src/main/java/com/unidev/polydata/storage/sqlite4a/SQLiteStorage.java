@@ -61,6 +61,11 @@ public class SQLiteStorage implements PolyStorage {
     }
 
     @Override
+    public <P extends Poly> P metadata() {
+        return null;
+    }
+
+    @Override
     public Collection<? extends Poly> list() {
         List<Poly> list = new ArrayList<>();
         SQLiteStmt stmt = db.prepare("SELECT * FROM polys ;");
@@ -72,6 +77,12 @@ public class SQLiteStorage implements PolyStorage {
         }
         stmt.close();
         return list;
+    }
+
+    @Override
+    public long size() {
+        SQLiteStmt stmt = db.prepare("SELECT COUNT(*) AS count FROM polys ;");
+        return stmt.executeSelect().getColumnLong(1);
     }
 
     public boolean hasPoly(String id) {
