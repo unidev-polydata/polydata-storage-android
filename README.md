@@ -4,8 +4,8 @@ Polydata storage for Android
 
 
 ```
-compile  'com.unidev.polydata:polydata-storage-android-assets:2.0.0-SNAPSHOT'
-compile  'com.unidev.polydata:polydata-storage-android-sqlite4a:2.0.0-SNAPSHOT'
+compile  'com.unidev.polydata:polydata-storage-android-assets:2.1.0-SNAPSHOT'
+compile  'com.unidev.polydata:polydata-storage-android-sqlite4a:2.1.0-SNAPSHOT'
 ```
 
 License
