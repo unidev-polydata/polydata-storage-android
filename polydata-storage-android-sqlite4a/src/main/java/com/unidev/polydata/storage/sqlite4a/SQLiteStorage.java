@@ -1,5 +1,7 @@
 package com.unidev.polydata.storage.sqlite4a;
 
+import android.support.annotation.Nullable;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +52,20 @@ public class SQLiteStorage implements PolyStorage {
     public Poly fetchById(String id) {
         SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE id = ?");
         sqLiteStmt.bindString(1, id);
+        return processQuery(sqLiteStmt);
+    }
+
+    /**
+     * Fetch by poly id
+     */
+    public Poly fetchByPolyId(String _id) {
+        SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE _id = ?");
+        sqLiteStmt.bindString(1, _id);
+        return processQuery(sqLiteStmt);
+    }
+
+    @Nullable
+    private Poly processQuery(SQLiteStmt sqLiteStmt) {
         Poly poly = null;
         SQLiteCursor cursor = sqLiteStmt.executeSelect();
         if (cursor.step()) {
@@ -60,21 +76,6 @@ public class SQLiteStorage implements PolyStorage {
         return poly;
     }
 
-    /**
-     * Fetch by poly id
-     */
-    public Poly fetchByPolyId(String _id) {
-        SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE _id = ?");
-        sqLiteStmt.bindString(1, _id);
-        Poly poly = null;
-        SQLiteCursor cursor = sqLiteStmt.executeSelect();
-        if (cursor.step()) {
-            String data = cursor.getColumnString(1);
-            poly = loadPoly(data);
-        }
-        sqLiteStmt.close();
-        return poly;
-    }
 
     @Override
     public <P extends Poly> P metadata() {
