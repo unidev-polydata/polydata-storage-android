@@ -60,6 +60,22 @@ public class SQLiteStorage implements PolyStorage {
         return poly;
     }
 
+    /**
+     * Fetch by poly id
+     */
+    public Poly fetchByPolyId(String _id) {
+        SQLiteStmt sqLiteStmt = db.prepare("SELECT data FROM polys WHERE _id = ?");
+        sqLiteStmt.bindString(1, _id);
+        Poly poly = null;
+        SQLiteCursor cursor = sqLiteStmt.executeSelect();
+        if (cursor.step()) {
+            String data = cursor.getColumnString(1);
+            poly = loadPoly(data);
+        }
+        sqLiteStmt.close();
+        return poly;
+    }
+
     @Override
     public <P extends Poly> P metadata() {
         return null;
@@ -116,7 +132,7 @@ public class SQLiteStorage implements PolyStorage {
         sqLiteStmt.close();
     }
 
-    protected Poly loadPoly(String raw) {
+    public Poly loadPoly(String raw) {
         try {
             BasicPoly basicPoly = objectMapper.readValue(raw, BasicPoly.class);
             return basicPoly;
