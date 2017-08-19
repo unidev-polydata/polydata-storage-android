@@ -65,7 +65,7 @@ public class SQLiteStorage implements PolyStorage {
     }
 
     @Nullable
-    private Poly processQuery(SQLiteStmt sqLiteStmt) {
+    public Poly processQuery(SQLiteStmt sqLiteStmt) {
         Poly poly = null;
         SQLiteCursor cursor = sqLiteStmt.executeSelect();
         if (cursor.step()) {
