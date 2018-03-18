@@ -34,7 +34,7 @@ public class PaperDBStorage implements ChangablePolyStorage {
 
     @Override
     public BasicPoly fetchById(String id) {
-        return Paper.book(storage).read(id, new BasicPoly());
+        return Paper.book(storage).read(id, null);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class PaperDBStorage implements ChangablePolyStorage {
     public boolean remove(String id) {
         Book book = Paper.book(storage);
         if (book.contains(id)) {
-            Paper.book(storage).delete(storage);
+            Paper.book(storage).delete(id);
             return true;
         }
         return false;

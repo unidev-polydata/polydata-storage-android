@@ -19,11 +19,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.unidev.core.di.AppContext;
+import com.unidev.polydata.domain.BasicPoly;
 import com.unidev.polydata.storage.AssetStorage;
+import com.unidev.polydata.storage.ChangablePolyStorage;
+import com.unidev.polydata.storage.paperdb.PaperDBStorage;
 import com.unidev.polydata.storage.sqlite4a.SQLiteStorage;
 
 import java.io.File;
 
+import io.paperdb.Paper;
 import sqlite4a.SQLite;
 
 /**
@@ -42,7 +46,11 @@ public class Core {
 
     private SQLiteStorage sqLiteStorage;
 
+    private PaperDBStorage paperDBStorage;
+
     public void load(Context context) {
+        Paper.init(context);
+
         storage = new AssetStorage();
         storage.load(context, ASSETS_FILE);
 
@@ -51,6 +59,9 @@ public class Core {
         File favorites = new File(context.getFilesDir(), "favorites");
         Log.d("favorites", "Favorites : " + favorites);
         sqLiteStorage = new SQLiteStorage(favorites.getPath());
+
+        paperDBStorage = new PaperDBStorage("test-storage");
+        paperDBStorage.persist(BasicPoly.newPoly("test-poly"));
     }
 
     public AssetStorage fetchStorage() {
@@ -60,5 +71,14 @@ public class Core {
     public SQLiteStorage fetchFavorites() {
         return sqLiteStorage;
     }
+
+    public PaperDBStorage getPaperDBStorage() {
+        return paperDBStorage;
+    }
+
+    public ChangablePolyStorage fetchActiveStorage() {
+        return paperDBStorage;
+    }
+
 
 }

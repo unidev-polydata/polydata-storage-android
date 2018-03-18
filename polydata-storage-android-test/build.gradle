@@ -50,4 +50,5 @@ dependencies {
     compile 'com.unidev.android.platform:ui-utils:3.3.0'
     compile project(':polydata-storage-android-assets')
     compile project(':polydata-storage-android-sqlite4a')
+    compile project(':polydata-storage-android-paper')
 }

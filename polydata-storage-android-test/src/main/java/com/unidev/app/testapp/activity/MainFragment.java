@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.unidev.app.testapp.R;
 import com.unidev.app.testapp.core.Core;
 import com.unidev.polydata.domain.Poly;
+import com.unidev.polydata.storage.ChangablePolyStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,9 @@ public class MainFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.list);
 
-        final List<? extends Poly> records = new ArrayList<>(Core.getInstance().fetchStorage().list());
+        final ChangablePolyStorage activeStorage = Core.getInstance().fetchActiveStorage();
+
+        final List<? extends Poly> records = new ArrayList<>(activeStorage.list());
 
 
         listView.setAdapter(new BaseAdapter() {
@@ -78,10 +81,10 @@ public class MainFragment extends Fragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (Core.getInstance().fetchFavorites().hasPoly(poly._id())) {
-                            Core.getInstance().fetchFavorites().removePoly(poly._id());
+                        if (activeStorage.fetchById(poly._id()) != null) {
+                            activeStorage.remove(poly._id());
                         } else {
-                            Core.getInstance().fetchFavorites().addPoly(poly);
+                            activeStorage.persist(poly);
                         }
                         updateButton(button, poly);
                     }
@@ -95,7 +98,9 @@ public class MainFragment extends Fragment {
 
 
     protected void updateButton(Button button, Poly poly) {
-        if (Core.getInstance().fetchFavorites().hasPoly(poly._id())) {
+        final ChangablePolyStorage activeStorage = Core.getInstance().fetchActiveStorage();
+
+        if (activeStorage.fetchById(poly._id()) != null) {
             button.setText("Remove");
         } else {
             button.setText("Add");
